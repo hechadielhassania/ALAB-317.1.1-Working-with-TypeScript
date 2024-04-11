@@ -1,14 +1,15 @@
 class Vehicle {
-  status = "stopped";
-
   constructor(make, model, wheels) {
     this.make = make;
     this.model = model;
     this.wheels = wheels;
+    this.status = "stopped"; // Moved status initialization to constructor
   }
+  
   start() {
-    this.status = "started";
+    this.status = "running"; // Corrected status from "started" to "running"
   }
+  
   stop() {
     this.status = "stopped";
   }
@@ -16,7 +17,7 @@ class Vehicle {
 
 class Car extends Vehicle {
   constructor(make, model) {
-    super(make, model, "four");
+    super(make, model, 4); // Changed "four" to 4
   }
 }
 
@@ -37,9 +38,9 @@ function printStatus(vehicle) {
 const myHarley = new MotorCycle("Harley-Davidson", "Low Rider S");
 myHarley.start();
 printStatus(myHarley);
-console.log(myHarley.make.toUppercase());
+console.log(myHarley.make.toUpperCase()); // Corrected "toUppercase()" to "toUpperCase()"
 
 const myBuick = new Car("Buick", "Regal");
-myBuick.wheels = myBuick.wheels - 1;
+myBuick.wheels = myBuick.wheels - 1; // Decreased wheels by 1
 console.log(myBuick.wheels);
-console.log(myBuick.mdl);
+console.log(myBuick.model); // Corrected "mdl" to "model"
