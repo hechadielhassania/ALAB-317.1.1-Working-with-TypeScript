@@ -1,59 +1,47 @@
-// Added appropriate types for properties and method parameters in the Vehicle class.
-// Used a union type "started" | "stopped" for the status property in the Vehicle class.
-// Adjusted the Car and MotorCycle classes according to TypeScript's checks. No changes were needed in this case.
-// Modified the printStatus function to accept a parameter of type Vehicle.
-// Corrected the status check in the printStatus function from "running" to "started".
-// Fixed the output statements below the function definitions to correctly access the make, wheels, and model properties of the instances.
+// The NCycle class accepts a generic type T.
+// The make and model properties can either be of type T or arrays of type T.
+// The print method logs different messages based on the type of make and model properties and the provided index.
+// The printAll method logs all matching pairs of make and model arrays if applicable.
 
-class Vehicle {
-    make: string;
-    model: string;
-    wheels: number;
-    status: "started" | "stopped"; // Union type for status
+class NCycle<T> {
+    make: T | T[];
+    model: T | T[];
   
-    constructor(make: string, model: string, wheels: number) {
+    constructor(make: T | T[], model: T | T[]) {
       this.make = make;
       this.model = model;
-      this.wheels = wheels;
-      this.status = "stopped";
     }
   
-    start(): void {
-      this.status = "started";
+    print(index?: number): void {
+      if (!Array.isArray(this.make) && !Array.isArray(this.model)) {
+        console.log(`This is a ${this.make} ${this.model} NCycle.`);
+      } else if (Array.isArray(this.make) && Array.isArray(this.model) && index !== undefined &&
+                 index >= 0 && index < this.make.length && index < this.model.length) {
+        console.log(`This NCycle has a ${this.make[index]} ${this.model[index]} at ${index}.`);
+      } else {
+        console.log("This NCycle was not created properly.");
+      }
     }
   
-    stop(): void {
-      this.status = "stopped";
-    }
-  }
-  
-  class Car extends Vehicle {
-    constructor(make: string, model: string) {
-      super(make, model, 4);
-    }
-  }
-  
-  class MotorCycle extends Vehicle {
-    constructor(make: string, model: string) {
-      super(make, model, 2);
-    }
-  }
-  
-  function printStatus(vehicle: Vehicle): void {
-    if (vehicle.status === "started") { // Corrected status check
-      console.log("The vehicle is running.");
-    } else {
-      console.log("The vehicle is stopped.");
+    printAll(): void {
+      if (Array.isArray(this.make) && Array.isArray(this.model) && this.make.length === this.model.length) {
+        for (let i = 0; i < this.make.length; i++) {
+          console.log(`This NCycle has a ${this.make[i]} ${this.model[i]} at ${i}.`);
+        }
+      } else {
+        console.log("This NCycle was not created properly.");
+      }
     }
   }
   
-  const myHarley = new MotorCycle("Harley-Davidson", "Low Rider S");
-  myHarley.start();
-  printStatus(myHarley);
-  console.log(myHarley.make.toUpperCase());
+  // Example usage
+  const singleNCycle = new NCycle("Brand", "Model");
+  singleNCycle.print(); // This is a Brand Model NCycle.
   
-  const myBuick = new Car("Buick", "Regal");
-  myBuick.wheels = myBuick.wheels - 1;
-  console.log(myBuick.wheels);
-  console.log(myBuick.model);
+  const arrayNCycle = new NCycle(["Brand1", "Brand2"], ["Model1", "Model2"]);
+  arrayNCycle.print(1); // This NCycle has a Brand2 Model2 at 1.
+  
+  arrayNCycle.printAll();
+  // This NCycle has a Brand1 Model1 at 0.
+  // This NCycle has a Brand2 Model2 at 1.
   

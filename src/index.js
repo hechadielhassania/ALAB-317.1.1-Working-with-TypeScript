@@ -1,66 +1,41 @@
-// Added appropriate types for properties and method parameters in the Vehicle class.
-// Used a union type "started" | "stopped" for the status property in the Vehicle class.
-// Adjusted the Car and MotorCycle classes according to TypeScript's checks. No changes were needed in this case.
-// Modified the printStatus function to accept a parameter of type Vehicle.
-// Corrected the status check in the printStatus function from "running" to "started".
-// Fixed the output statements below the function definitions to correctly access the make, wheels, and model properties of the instances.
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Vehicle = /** @class */ (function () {
-    function Vehicle(make, model, wheels) {
+// The NCycle class accepts a generic type T.
+// The make and model properties can either be of type T or arrays of type T.
+// The print method logs different messages based on the type of make and model properties and the provided index.
+// The printAll method logs all matching pairs of make and model arrays if applicable.
+var NCycle = /** @class */ (function () {
+    function NCycle(make, model) {
         this.make = make;
         this.model = model;
-        this.wheels = wheels;
-        this.status = "stopped";
     }
-    Vehicle.prototype.start = function () {
-        this.status = "started";
+    NCycle.prototype.print = function (index) {
+        if (!Array.isArray(this.make) && !Array.isArray(this.model)) {
+            console.log("This is a ".concat(this.make, " ").concat(this.model, " NCycle."));
+        }
+        else if (Array.isArray(this.make) && Array.isArray(this.model) && index !== undefined &&
+            index >= 0 && index < this.make.length && index < this.model.length) {
+            console.log("This NCycle has a ".concat(this.make[index], " ").concat(this.model[index], " at ").concat(index, "."));
+        }
+        else {
+            console.log("This NCycle was not created properly.");
+        }
     };
-    Vehicle.prototype.stop = function () {
-        this.status = "stopped";
+    NCycle.prototype.printAll = function () {
+        if (Array.isArray(this.make) && Array.isArray(this.model) && this.make.length === this.model.length) {
+            for (var i = 0; i < this.make.length; i++) {
+                console.log("This NCycle has a ".concat(this.make[i], " ").concat(this.model[i], " at ").concat(i, "."));
+            }
+        }
+        else {
+            console.log("This NCycle was not created properly.");
+        }
     };
-    return Vehicle;
+    return NCycle;
 }());
-var Car = /** @class */ (function (_super) {
-    __extends(Car, _super);
-    function Car(make, model) {
-        return _super.call(this, make, model, 4) || this;
-    }
-    return Car;
-}(Vehicle));
-var MotorCycle = /** @class */ (function (_super) {
-    __extends(MotorCycle, _super);
-    function MotorCycle(make, model) {
-        return _super.call(this, make, model, 2) || this;
-    }
-    return MotorCycle;
-}(Vehicle));
-function printStatus(vehicle) {
-    if (vehicle.status === "started") { // Corrected status check
-        console.log("The vehicle is running.");
-    }
-    else {
-        console.log("The vehicle is stopped.");
-    }
-}
-var myHarley = new MotorCycle("Harley-Davidson", "Low Rider S");
-myHarley.start();
-printStatus(myHarley);
-console.log(myHarley.make.toUpperCase());
-var myBuick = new Car("Buick", "Regal");
-myBuick.wheels = myBuick.wheels - 1;
-console.log(myBuick.wheels);
-console.log(myBuick.model);
+// Example usage
+var singleNCycle = new NCycle("Brand", "Model");
+singleNCycle.print(); // This is a Brand Model NCycle.
+var arrayNCycle = new NCycle(["Brand1", "Brand2"], ["Model1", "Model2"]);
+arrayNCycle.print(1); // This NCycle has a Brand2 Model2 at 1.
+arrayNCycle.printAll();
+// This NCycle has a Brand1 Model1 at 0.
+// This NCycle has a Brand2 Model2 at 1.
